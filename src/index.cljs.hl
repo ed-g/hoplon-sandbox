@@ -7,55 +7,20 @@
 
 (reload-all 1000)
 
-;; state machine private
-(defc things [{:text "thing 1"} {:text "thing 2"} {:text "thing red"} {:text "thing blue"}])
-(defc use-upper-case? false)
-(defc= case (if use-upper-case?
-              upper-case
-              lower-case))
-
-;; state machine public
-(defc= state (mapv #(update-in % [:text] case) things))
-(defn toggle-case! [_] (swap! use-upper-case? not))
-
-(defc  x  0)
-(defc  y  0)
-(defc  op +)
-
-(defc= result (op x y))
-
-(def int js/parseInt)
-(def ops {"+" +
-          "-" -
-          "*" *
-          "/" /})
-
 (html
   (head
     (link :href "css/bootstrap.css" :rel "stylesheet"))
   (body
-    (input :id "x"
-           :type "text"
-           :value "0"
-           :on-change #(reset! x (int (val-id "x"))))
-
-    (select :id "op"
-            :on-change #(reset! op (ops (val-id "op")))
-            (option :value "+" :selected true "+")
-            (option :value "-" "-")
-            (option :value "*" "*")
-            (option :value "/" "/"))
-
-    (input :id "y"
-           :type "text"
-           :value "0"
-           :on-change #(reset! y (int (val-id "y"))))
-
-    (text " => ~{result}")
-
-    (ul
-      (loop-tpl
-        :bindings [{ x :text} state]
-        (li (text "~{x}"))))
-    (button :on-click toggle-case! "toggle case")
-    ))
+    (tabs/tabs
+      (span "Zero")
+      (div 
+           (h4 "foo")
+           (p "Content for tab 0."))
+      (span "One")
+      (div
+           (h4 "bar")
+           (p "Content for tab 1."))
+      (span "Two")
+      (div 
+           (h4 "baz")
+           (p "Content for tab 2.")))))
